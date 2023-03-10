@@ -40,20 +40,20 @@ function onSearchForm(e) {
 } 
 
 
-function onLoadMore(){
+function onLoadMore(){  // у функції виконується побудова  та завантаження карток при натисканні на  кнопку Load Morе
     loadMoreBtn.classList.add('is-hidden');
     newApiService.fechPixabay()
     .then(createGallery);
      
 }
 
-function reseterPage () {
+function reseterPage () {  //очистка сторінки+прихована кнопка 
     loadMoreBtn.classList.add('is-hidden');
     galleryForm.innerHTML = '';
     
 } 
 
-function onFetcherror (error){
+function onFetcherror (error){ //повідомлення про помилку + прихована кнопка
     loadMoreBtn.classList.add('is-hidden')
     return Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
@@ -62,7 +62,7 @@ function onFetcherror (error){
 
  
 function createGallery(dataMasive) {
-    if(dataMasive[1] === Math.ceil(dataMasive[2] / dataMasive[3])) {
+    if(dataMasive[1] === Math.ceil(dataMasive[2] / dataMasive[3])) { //умови для побудови картки
     Notify.info ("We're sorry, but you've reached the end of search results."); 
     loadMoreBtn.classList.add('is-hidden')};
 
