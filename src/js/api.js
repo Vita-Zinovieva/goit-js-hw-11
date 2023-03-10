@@ -2,7 +2,7 @@
 const API_KEY= '34096302-1d0272a92e2c550c5171e7dff';
 const BASE_URL = 'https://pixabay.com/api/';
 let OPTIONS = 'image_type=photo&orientation=horizontal&safesearch=true';
-const PER_PAGE = 30
+const PER_PAGE = 40
 
 // клас, що містить методи і відповідає за:
 export default class NewApiService{
@@ -11,40 +11,38 @@ export default class NewApiService{
         this.page = 1; //номер групи
     }
 
-fechPixabay() { //робимо запит та отримуємо об'єкти
-    return fetch(`${BASE_URL}?key=${API_KEY}&q=${this.searchQuery}&${OPTIONS}&per_page=${PER_PAGE}&page=${this.page}`)
-    
-        .then(response => response.json())
-        .then(data => { 
-            console.log(data)
-            this.dataMasive = [data.hits, this.page, data.totalHits, PER_PAGE];
-            this.incrementPage();
-            console.log(this.dataMasive)
-           
-            if (data.hits.length === 0) {
-               return Error
-            } else {
-            return this.dataMasive} //повертаємо результат фетча 
-        });    
+async fechPixabay() { //робимо запит та отримуємо об'єкти
+    try {
+        const response = await fetch(`${BASE_URL}?key=${API_KEY}&q=${this.searchQuery}&${OPTIONS}&per_page=${PER_PAGE}&page=${this.page}`)
+    const data = await response.json();
+        let dataMasive = [data.hits, this.page, data.totalHits, PER_PAGE];
+        this.incrementPage();
+        if (data.hits.length === 0) {
+            return Error
+        } return dataMasive //повертаємо результат фетча 
+    }
+    catch(error){
+        console.log(error)
+    }
 }
 
 
-incrementPage() { //після отримання рез. і натискання Load More додається слудуюча сторінка
-    this.page += 1;  
-}
+    incrementPage() { //після отримання рез. і натискання Load More додається слудуюча сторінка
+        this.page += 1;  
+    }
 
-resetNumberPage() { // під час нового запиту робимо скид до першої сторінки 
-    this.page = 1;  
-}
+    resetNumberPage() { // під час нового запиту робимо скид до першої сторінки 
+        this.page = 1;  
+    }
 
-//контроль терміну запиту, отримання даних та можливість перезапису за необхідності
-get query(){
-   return this.searchQuery; 
-}
+    //контроль терміну запиту, отримання даних та можливість перезапису за необхідності
+    get query(){
+        return this.searchQuery; 
+    }
 
-set query(newQuery){
-    this.searchQuery = newQuery; 
- }
+    set query(newQuery){
+        this.searchQuery = newQuery; 
+    }
 
 }  
 
